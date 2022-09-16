@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map} from 'rxjs';
 
 import { JSONResponse, Transaction } from '../models/transaction.model';
@@ -7,49 +7,47 @@ import { JSONResponse, Transaction } from '../models/transaction.model';
 @Injectable({
   providedIn: 'root',
 })
-export class TransactionsService implements OnInit {
+export class TransactionsService {
   totalTransactionAmount!: number;
-  transactions = new Array;
+  transactions = new Array();
 
   incomeTransactions: Transaction[] = [];
   outcomeTransactions: Transaction[] = [];
   investmentTransactions: Transaction[] = [];
   loanTransactions: Transaction[] = [];
 
+  constructor(private http: HttpClient) {}
 
   getTransactions() {
     return this.http.get<JSONResponse>('../assets/jsonviewer.json').pipe(
-      map((res: JSONResponse) => {
-        this.totalTransactionAmount = res.total;
-           this.incomeTransactions = res.data.filter(
-             (transactions) => transactions.type === 'income'
-           );
-           this.outcomeTransactions = res.data.filter(
-             (transactions) => transactions.type === 'outcome'
-           );
-           this.investmentTransactions = res.data.filter(
-             (transactions) => transactions.type === 'investment'
-           );
-           this.loanTransactions = res.data.filter(
-             (transactions) => transactions.type === 'loan'
-           );
+      map((fullResponse: JSONResponse) => {
+        this.totalTransactionAmount = fullResponse.total;
 
-         this.transactions.push(
-           this.incomeTransactions,
-           this.outcomeTransactions,
-           this.investmentTransactions,
-           this.loanTransactions
-         );
+        fullResponse.data.forEach((transaction) => {
+          switch (transaction.type) {
+            case 'income':
+              this.incomeTransactions.push(transaction);
+              break;
+            case 'outcome':
+              this.outcomeTransactions.push(transaction);
+              break;
+            case 'investment':
+              this.investmentTransactions.push(transaction);
+              break;
+            default:
+              this.loanTransactions.push(transaction);
+          }
+        });
 
-      }),
-    )
+        this.transactions.push(
+          this.incomeTransactions,
+          this.outcomeTransactions,
+          this.investmentTransactions,
+          this.loanTransactions
+        );
+      })
+    );
   }
-
-  constructor(private http: HttpClient) {
-    };
-
-  ngOnInit() {}
-
-  }
+}
 
 

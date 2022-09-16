@@ -11,9 +11,7 @@ export class AppComponent implements OnInit {
   constructor(private trService: TransactionsService) {
   }
   ngOnInit(): void {
-      this.trService.getTransactions().subscribe(res =>
-        console.log('1')
-        )
+      this.trService.getTransactions().subscribe()
   }
 
   ngOnDestroy(): void {

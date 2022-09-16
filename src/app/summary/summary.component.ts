@@ -18,6 +18,7 @@ export class SummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.setTransactions(this.trService.transactions)
+
   }
 
 }

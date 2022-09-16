@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TransactionsService } from './service/transactions.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'test-vasilenko';
+export class AppComponent implements OnInit {
+
+  constructor(private trService: TransactionsService) {
+  }
+  ngOnInit(): void {
+      this.trService.getTransactions().subscribe(res =>
+        console.log('1')
+        )
+  }
+
+  ngOnDestroy(): void {
+
+  }
 }

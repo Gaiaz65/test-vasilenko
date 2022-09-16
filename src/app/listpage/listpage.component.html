@@ -1,1 +1,18 @@
-<p>listpage works!</p>
+
+
+<nav class="nav nav-pills ">
+  <a class="nav-link" aria-current="page" *ngFor="let link of transactions; let i = index" [queryParams] = "{tab:i}"  [routerLink]="['./']"  routerLinkActive="active"
+  >{{link[0].type | titlecase}}</a>
+
+  <button class="nav-link d-flex" routerLink="/">Go back</button>
+</nav>
+
+
+
+
+
+<div *ngFor="let items of transactions; let i = index">
+    <app-transaction [transactions]="items" *ngIf="router.url === '/navigator?tab='+i"></app-transaction>
+</div>
+
+

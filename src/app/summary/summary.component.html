@@ -1,1 +1,23 @@
-<p>summary works!</p>
+<div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">Welcome</h5>
+    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, neque.</p>
+    <a class="btn btn-primary" routerLink="/navigator" [queryParams] = "{tab:0}">See all transactions</a>
+  </div>
+  <div class="card-footer text-muted">
+    You have {{this.trService.totalTransactionAmount}} transactions
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6" *ngFor="let transaction of transactions; let i = index">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{transaction.length}}</h5>
+        <p class="card-text">{{transaction[0].type | titlecase}}</p>
+        <a class="btn btn-primary" routerLink="/navigator" [queryParams] = "{tab:i}" >See transactions</a>
+      </div>
+    </div>
+  </div>
+</div>
+
